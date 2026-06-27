@@ -1,9 +1,9 @@
 # TouchNothing Privacy Policy
 
-**Last updated:** June 26, 2026  
+**Last updated:** June 27, 2026  
 **Contact:** https://github.com/haranilov/TouchNothing/issues
 
-TouchNothing ("the App") is developed by Kos Haranilov. This policy explains what data the App collects and how it is used.
+TouchNothing ("the App") is developed by Kos Haranilov. This policy applies to the iOS and Android versions of TouchNothing and explains what data the App collects and how it is used.
 
 ## Summary
 
@@ -31,7 +31,15 @@ TouchNothing collects a nickname and gameplay statistics to provide accounts, le
 - If you delete the app or switch devices, guest progress may be lost.
 
 ### Local device storage
-- The App stores your nickname, session token, and preferences (for example, whether rules were hidden) using iOS UserDefaults on your device.
+- The App stores your nickname, session token, and preferences (for example, whether rules were hidden) locally on your device.
+- On **iOS**, this uses UserDefaults.
+- On **Android**, this uses SharedPreferences.
+
+### Call detection (optional)
+- During an active session, the App may detect incoming phone or VoIP calls so your session ends, as described in the in-app rules.
+- On **iOS**, the App uses Apple's CallKit to observe active system calls. The App does not place calls or access your phone number.
+- On **Android**, you may be asked to allow phone access (`READ_PHONE_STATE`). If granted, the App reads call state only to end your session on incoming cellular calls. The App does not place calls, record calls, or access your phone number. If you deny the permission, the App still works; some VoIP calls may still end a session when the system routes audio for a call.
+- Call-related signals are processed on your device and are not uploaded to our servers.
 
 ## Data We Do Not Collect
 
@@ -47,6 +55,7 @@ TouchNothing collects a nickname and gameplay statistics to provide accounts, le
 - To save and display your scores and totals
 - To operate global leaderboards
 - To protect accounts (for example, limiting failed sign-in attempts)
+- To end an active session when a phone or VoIP call is detected (on-device only)
 
 ## Third-Party Services
 
@@ -74,6 +83,7 @@ We use industry-standard measures including hashed PINs, session tokens, and HTT
 
 - You may use Guest mode without creating a permanent account.
 - You may sign out at any time from the app menu.
+- On Android, you may deny phone permission and still use the App.
 - You may request account/data deletion via the contact link above.
 
 ## Changes

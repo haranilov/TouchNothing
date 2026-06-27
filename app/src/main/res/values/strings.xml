@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TouchNothing</string>
+
+    <string name="nickname_placeholder">Enter your nickname</string>
+    <string name="nickname_continue">Continue</string>
+    <string name="nickname_taken">This nickname is already taken</string>
+    <string name="nickname_empty">Enter a nickname to continue</string>
+    <string name="nickname_invalid_length">Nickname must be 2–24 characters</string>
+    <string name="nickname_invalid_characters">Nickname can only contain letters, numbers, and underscores</string>
+    <string name="nickname_network_error">Could not connect. Check your internet and try again.</string>
+
+    <string name="auth_mode_register">Create</string>
+    <string name="auth_mode_sign_in">Sign In</string>
+    <string name="auth_mode_guest">Guest</string>
+    <string name="auth_guest_nickname_label">Your nickname</string>
+    <string name="auth_guest_warning">Guest mode has no PIN. If you switch phones or reinstall the app, you will lose this nickname and your stats. Create an account with a PIN to keep your progress.</string>
+    <string name="auth_guest_continue">Continue as Guest</string>
+    <string name="auth_guest_creating">Setting up guest…</string>
+    <string name="auth_pin_placeholder">4-digit PIN</string>
+    <string name="auth_confirm_pin_placeholder">Confirm PIN</string>
+    <string name="auth_invalid_pin">PIN must be exactly 4 digits</string>
+    <string name="auth_pin_mismatch">PINs do not match</string>
+    <string name="auth_invalid_credentials">Incorrect nickname or PIN</string>
+    <string name="auth_invalid_credentials_remaining">Incorrect nickname or PIN. %1$d attempts remaining.</string>
+    <string name="auth_account_locked">Too many attempts. Try again in 15 minutes.</string>
+    <string name="auth_forgot_pin">PIN cannot be recovered. Create a new nickname if you forgot it.</string>
+    <string name="auth_creating">Creating account…</string>
+    <string name="auth_signing_in">Signing in…</string>
+    <string name="auth_session_expired">Session expired. Sign in again.</string>
+    <string name="auth_server_upgrade_required">Server update required. Run migration v3 in Supabase SQL Editor, then try again.</string>
+
+    <string name="menu_start">Start</string>
+    <string name="menu_leaderboard">Leaderboard</string>
+    <string name="menu_my_total">My Total</string>
+    <string name="menu_sign_out">Sign Out</string>
+
+    <string name="rules_body">Open the app. Touch nothing. Don\'t leave. The longer you stay, the higher you rank. If you touch the screen, leave the app, or receive a phone call — your session ends. To avoid interruptions, turn on Airplane Mode and turn off Wi-Fi (including messenger calls over Wi-Fi).</string>
+    <string name="rules_dont_show">Don\'t show again</string>
+    <string name="rules_start">I understand. Start.</string>
+
+    <string name="session_phone_permission_title">Detect phone calls?</string>
+    <string name="session_phone_permission_message">Allow phone access to end your session on incoming cellular calls. VoIP calls (WhatsApp, Telegram) are detected without this permission.</string>
+    <string name="session_phone_permission_allow">Allow</string>
+    <string name="session_phone_permission_skip">Not now</string>
+
+    <string name="result_title">You lasted %1$s</string>
+    <string name="result_back">Back to menu</string>
+    <string name="result_too_short">Sessions under 5 seconds are not saved.</string>
+    <string name="result_saving">Saving your result…</string>
+    <string name="result_saved">Result saved.</string>
+    <string name="result_save_failed">Could not save your result.</string>
+    <string name="result_retry_save">Try again</string>
+
+    <string name="leaderboard_title">Leaderboard</string>
+    <string name="leaderboard_mode_best_session">Best Session</string>
+    <string name="leaderboard_mode_total">All Time</string>
+    <string name="leaderboard_empty">No records yet.</string>
+    <string name="leaderboard_offline">Offline — showing cached rankings.</string>
+    <string name="leaderboard_error">Could not load leaderboard.</string>
+
+    <string name="my_total_title">My Total</string>
+    <string name="my_total_label">Total time</string>
+    <string name="my_total_load_failed">Could not load your total. Try again later.</string>
+    <string name="my_total_sessions">%1$d sessions</string>
+    <string name="my_total_no_sessions">No saved sessions yet.</string>
+</resources>

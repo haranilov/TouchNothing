@@ -1,22 +1,14 @@
-# Xcode
+# Android
+*.iml
+.gradle/
 build/
-DerivedData/
-*.xcarchive
-*.xcuserstate
-xcuserdata/
-*.xccheckout
-*.moved-aside
-*.hmap
-*.ipa
-*.dSYM.zip
-*.dSYM
+app/build/
+.cxx/
+.idea/
+captures/
+*.apk
+*.aab
+*.jks
+*.keystore
+local.properties
 
-# Swift Package Manager
-.build/
-.swiftpm/
-
-# macOS
-.DS_Store
-
-# Secrets
-TouchNothing/Resources/SupabaseSecrets.plist

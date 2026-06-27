@@ -1,6 +1,6 @@
 ---
 description: Общие правила стиля кода и принятия решений
-alwaysApply: false
+alwaysApply: true
 ---
 
 ## Code style

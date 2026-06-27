@@ -1,0 +1,12 @@
+## Copy to local.properties and fill in your values.
+## local.properties is gitignored.
+
+sdk.dir=/path/to/Android/sdk
+SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+SUPABASE_ANON_KEY=YOUR_ANON_KEY
+
+# Release signing (required for Play Store upload)
+RELEASE_STORE_FILE=release.keystore
+RELEASE_STORE_PASSWORD=your_store_password
+RELEASE_KEY_ALIAS=touchnothing
+RELEASE_KEY_PASSWORD=your_key_password
