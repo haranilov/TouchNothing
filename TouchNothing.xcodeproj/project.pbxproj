@@ -59,7 +59,6 @@
 		E1A100000000000000000173 /* NicknameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000169 /* NicknameTextField.swift */; };
 		E1A100000000000000000174 /* PinSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000170 /* PinSecureField.swift */; };
 		E1A100000000000000000175 /* AuthCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000177 /* AuthCredentials.swift */; };
-		E1A100000000000000000181 /* SessionCallMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000180 /* SessionCallMonitor.swift */; };
 		E1A100000000000000000176 /* AuthValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000178 /* AuthValidationError.swift */; };
 		E1A100000000000000000201 /* TouchNothingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000220 /* TouchNothingTests.swift */; };
 /* End PBXBuildFile section */
@@ -109,7 +108,6 @@
 		E1A100000000000000000169 /* NicknameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTextField.swift; sourceTree = "<group>"; };
 		E1A100000000000000000170 /* PinSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinSecureField.swift; sourceTree = "<group>"; };
 		E1A100000000000000000177 /* AuthCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCredentials.swift; sourceTree = "<group>"; };
-		E1A100000000000000000180 /* SessionCallMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCallMonitor.swift; sourceTree = "<group>"; };
 		E1A100000000000000000178 /* AuthValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthValidationError.swift; sourceTree = "<group>"; };
 		E1A100000000000000000200 /* TouchNothingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TouchNothingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1A100000000000000000220 /* TouchNothingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchNothingTests.swift; sourceTree = "<group>"; };
@@ -274,7 +272,6 @@
 			children = (
 				E1A100000000000000000128 /* DurationFormatter.swift */,
 				E1A100000000000000000129 /* SessionTimer.swift */,
-				E1A100000000000000000180 /* SessionCallMonitor.swift */,
 				E1A100000000000000000138 /* StatusBarHider.swift */,
 				E1A100000000000000000139 /* AppConstants.swift */,
 				E1A10000000000000000013A /* LeaderboardRowMapper.swift */,
@@ -436,7 +433,6 @@
 				E1A100000000000000000027 /* LeaderboardRow.swift in Sources */,
 				E1A100000000000000000028 /* DurationFormatter.swift in Sources */,
 				E1A100000000000000000029 /* SessionTimer.swift in Sources */,
-				E1A100000000000000000181 /* SessionCallMonitor.swift in Sources */,
 				E1A100000000000000000038 /* StatusBarHider.swift in Sources */,
 				E1A100000000000000000039 /* AppConstants.swift in Sources */,
 				E1A10000000000000000003A /* LeaderboardRowMapper.swift in Sources */,
@@ -549,7 +545,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
@@ -581,7 +577,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -611,7 +607,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -630,7 +626,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
