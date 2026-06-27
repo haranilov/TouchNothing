@@ -41,6 +41,50 @@ assert_status() {
   echo "PASS: $label"
 }
 
+assert_body_contains() {
+  local label="$1"
+  local token="$2"
+
+  if grep -qi "$token" /tmp/tn_body.txt; then
+    echo "PASS: $label"
+  else
+    echo "FAIL: $label (expected body to contain '$token')"
+    cat /tmp/tn_body.txt || true
+    exit 1
+  fi
+}
+
+assert_login_failure() {
+  local label="$1"
+  local expected_error="$2"
+  local actual_status="$3"
+
+  assert_status "$label" "200" "$actual_status"
+  if python3 -c "import json, sys; data=json.load(open('/tmp/tn_body.txt')); sys.exit(0 if data.get('ok') is False and data.get('error') == sys.argv[1] else 1)" "$expected_error"; then
+    echo "PASS: $label returns ok=false/$expected_error"
+  else
+    echo "FAIL: $label (expected ok=false error=$expected_error)"
+    cat /tmp/tn_body.txt || true
+    exit 1
+  fi
+}
+
+assert_login_failure_with_remaining() {
+  local label="$1"
+  local expected_error="$2"
+  local expected_remaining="$3"
+  local actual_status="$4"
+
+  assert_status "$label" "200" "$actual_status"
+  if python3 -c "import json, sys; data=json.load(open('/tmp/tn_body.txt')); ok = data.get('ok') is False and data.get('error') == sys.argv[1]; remaining = data.get('remaining_attempts') == int(sys.argv[2]); sys.exit(0 if ok and remaining else 1)" "$expected_error" "$expected_remaining"; then
+    echo "PASS: $label returns ok=false/$expected_error remaining=$expected_remaining"
+  else
+    echo "FAIL: $label (expected ok=false error=$expected_error remaining=$expected_remaining)"
+    cat /tmp/tn_body.txt || true
+    exit 1
+  fi
+}
+
 parse_session_token() {
   python3 -c "import json; data=json.load(open('/tmp/tn_body.txt')); print(data['session_token'] if isinstance(data, dict) else data)"
 }
@@ -55,6 +99,20 @@ auth_response_is_json_object() {
 }
 
 echo "== Supabase API integration tests =="
+
+status="$(request POST "/rpc/login_lock_health_check" "{}")"
+if [[ "$status" == "200" ]]; then
+  if grep -q '"login_user_has_lock_logic": true' /tmp/tn_body.txt \
+    && grep -q '"login_attempts_table": true' /tmp/tn_body.txt; then
+    echo "PASS: login lock migration deployed"
+  else
+    echo "FAIL: login lock migration not deployed (re-run migration_v5_login_lock.sql)"
+    cat /tmp/tn_body.txt || true
+    exit 1
+  fi
+else
+  echo "WARN: login_lock_health_check unavailable (apply migration_v5_login_lock.sql)"
+fi
 
 status="$(request GET "/records?select=nickname&limit=1")"
 assert_status "records readable" "200" "$status"
@@ -80,14 +138,35 @@ else
   echo "SKIP: case-insensitive login (apply migration_v4_case_insensitive_nickname.sql)"
 fi
 
-status="$(request POST "/rpc/login_user" "{\"p_nickname\":\"$TEST_NICK\",\"p_pin\":\"wrong\"}")"
-assert_status "login_user rejects wrong pin" "400" "$status"
+status="$(request POST "/rpc/login_user" "{\"p_nickname\":\"$TEST_NICK\",\"p_pin\":\"0001\"}")"
+assert_login_failure_with_remaining "login_user rejects wrong pin" "invalid_credentials" 4 "$status"
 
 status="$(request POST "/rpc/submit_session" "{\"p_nickname\":\"$TEST_NICK\",\"p_duration\":12,\"p_session_token\":\"$SESSION_TOKEN\"}")"
 assert_status "submit_session" "204" "$status"
 
 status="$(request POST "/rpc/get_user_stats" "{\"p_nickname\":\"$(echo "$TEST_NICK" | tr '[:upper:]' '[:lower:]')\"}")"
 assert_status "get_user_stats" "200" "$status"
+
+for attempt in 1 2 3; do
+  remaining=$((4 - attempt))
+  status="$(request POST "/rpc/login_user" "{\"p_nickname\":\"$TEST_NICK\",\"p_pin\":\"0000\"}")"
+  assert_login_failure_with_remaining "login_user wrong pin attempt $attempt" "invalid_credentials" "$remaining" "$status"
+done
+
+status="$(request POST "/rpc/login_user" "{\"p_nickname\":\"$TEST_NICK\",\"p_pin\":\"0000\"}")"
+assert_login_failure "login_user locks on 5th failure" "account_locked" "$status"
+
+status="$(request POST "/rpc/login_user" "{\"p_nickname\":\"$TEST_NICK\",\"p_pin\":\"$TEST_PIN\"}")"
+assert_login_failure "login_user blocks correct pin while locked" "account_locked" "$status"
+
+status="$(request GET "/login_attempts?select=nickname&limit=1")"
+if [[ "$status" == "200" ]] && grep -q '\[\]' /tmp/tn_body.txt; then
+  echo "WARN: login_attempts readable by anon (expected after REVOKE in v5)"
+elif [[ "$status" != "200" ]]; then
+  echo "PASS: login_attempts not readable by anon"
+else
+  echo "WARN: login_attempts may expose data to anon"
+fi
 
 status="$(request DELETE "/users?nickname=eq.$TEST_NICK")"
 assert_status "cleanup test user" "204" "$status"

@@ -28,6 +28,7 @@ enum LocalizationKey {
     static let authInvalidPin = "auth.invalid_pin"
     static let authPinMismatch = "auth.pin_mismatch"
     static let authInvalidCredentials = "auth.invalid_credentials"
+    static let authInvalidCredentialsRemaining = "auth.invalid_credentials_remaining"
     static let authAccountLocked = "auth.account_locked"
     static let authForgotPin = "auth.forgot_pin"
     static let authCreating = "auth.creating"

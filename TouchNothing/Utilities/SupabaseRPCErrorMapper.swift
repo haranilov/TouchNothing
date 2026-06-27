@@ -2,15 +2,20 @@ import Foundation
 import Supabase
 
 enum SupabaseRPCErrorMapper {
-    private static let messageMappings: [(token: String, error: SupabaseServiceError)] = [
-        ("nickname_taken", .nicknameTaken),
-        ("invalid_credentials", .invalidCredentials),
-        ("account_locked", .accountLocked),
-        ("invalid_pin", .invalidPin),
-        ("invalid_nickname", .invalidNickname),
-        ("invalid_session_token", .invalidSessionToken),
-        ("nickname_not_registered", .nicknameNotRegistered)
+    private static let authErrorTokens: [String: SupabaseServiceError] = [
+        "nickname_taken": .nicknameTaken,
+        "invalid_credentials": .invalidCredentials(),
+        "account_locked": .accountLocked,
+        "invalid_pin": .invalidPin,
+        "invalid_nickname": .invalidNickname,
+        "invalid_session_token": .invalidSessionToken,
+        "nickname_not_registered": .nicknameNotRegistered
     ]
+
+    static func mapAuthErrorToken(_ token: String?) -> SupabaseServiceError? {
+        guard let token else { return nil }
+        return authErrorTokens[token]
+    }
 
     static func map(_ error: Error) -> SupabaseServiceError {
         if let postgrestError = error as? PostgrestError {
@@ -38,8 +43,8 @@ enum SupabaseRPCErrorMapper {
     }
 
     private static func mapMessage(_ message: String) -> SupabaseServiceError {
-        for mapping in messageMappings where message.contains(mapping.token) {
-            return mapping.error
+        for (token, error) in authErrorTokens where message.contains(token) {
+            return error
         }
 
         if message.contains("function"), message.contains("does not exist") {

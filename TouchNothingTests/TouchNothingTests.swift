@@ -149,12 +149,16 @@ final class LeaderboardRowMapperTests: XCTestCase {
 final class SupabaseRPCErrorMapperTests: XCTestCase {
     func testMapsKnownErrors() {
         XCTAssertEqual(
+            SupabaseRPCErrorMapper.mapAuthErrorToken("nickname_taken"),
+            .nicknameTaken
+        )
+        XCTAssertEqual(
             SupabaseRPCErrorMapper.map(TestError("nickname_taken")),
             .nicknameTaken
         )
         XCTAssertEqual(
             SupabaseRPCErrorMapper.map(TestError("invalid_credentials")),
-            .invalidCredentials
+            .invalidCredentials()
         )
         XCTAssertEqual(
             SupabaseRPCErrorMapper.map(TestError("account_locked")),
@@ -209,6 +213,77 @@ final class AuthSessionDecodingTests: XCTestCase {
 
         XCTAssertEqual(session.nickname, "Kos")
         XCTAssertEqual(session.sessionToken, "abc123token")
+    }
+
+    func testAuthResponseDecoderDecodesSuccessfulLoginPayload() throws {
+        let json = Data(
+            #"{"ok":true,"nickname":"Kos","session_token":"abc123token"}"#.utf8
+        )
+        let session = try AuthResponseDecoder.decodeSession(from: json, fallbackNickname: "kos")
+
+        XCTAssertEqual(session.nickname, "Kos")
+        XCTAssertEqual(session.sessionToken, "abc123token")
+    }
+
+    func testAuthResponseDecoderThrowsAccountLocked() {
+        let json = Data(#"{"ok":false,"error":"account_locked"}"#.utf8)
+
+        XCTAssertThrowsError(try AuthResponseDecoder.decodeSession(from: json, fallbackNickname: "kos")) { error in
+            XCTAssertEqual(error as? SupabaseServiceError, .accountLocked)
+        }
+    }
+
+    func testAuthResponseDecoderThrowsInvalidCredentialsWithRemaining() {
+        let json = Data(
+            #"{"ok":false,"error":"invalid_credentials","remaining_attempts":2}"#.utf8
+        )
+
+        XCTAssertThrowsError(try AuthResponseDecoder.decodeSession(from: json, fallbackNickname: "kos")) { error in
+            XCTAssertEqual(
+                error as? SupabaseServiceError,
+                .invalidCredentials(remainingAttempts: 2)
+            )
+        }
+    }
+
+    func testDecodesSuccessfulAuthRPCResponse() throws {
+        let json = Data(
+            #"{"ok":true,"nickname":"Kos","session_token":"abc123token"}"#.utf8
+        )
+        let response = try JSONDecoder().decode(AuthRPCResponse.self, from: json)
+
+        XCTAssertEqual(response.authSession?.nickname, "Kos")
+        XCTAssertEqual(response.authSession?.sessionToken, "abc123token")
+        XCTAssertNil(response.serviceError)
+    }
+
+    func testDecodesFailedAuthRPCResponse() throws {
+        let json = Data(
+            #"{"ok":false,"error":"invalid_credentials","remaining_attempts":3}"#.utf8
+        )
+        let response = try JSONDecoder().decode(AuthRPCResponse.self, from: json)
+
+        XCTAssertNil(response.authSession)
+        XCTAssertEqual(response.serviceError, .invalidCredentials(remainingAttempts: 3))
+    }
+
+    func testDecodesAccountLockedAuthRPCResponse() throws {
+        let json = Data(#"{"ok":false,"error":"account_locked"}"#.utf8)
+        let response = try JSONDecoder().decode(AuthRPCResponse.self, from: json)
+
+        XCTAssertNil(response.authSession)
+        XCTAssertEqual(response.serviceError, .accountLocked)
+    }
+
+    func testAuthErrorMessageShowsRemainingAttempts() {
+        let message = AuthErrorMessage.message(
+            for: .invalidCredentials(remainingAttempts: 4)
+        )
+
+        XCTAssertEqual(
+            message,
+            String(format: LocalizationKey.authInvalidCredentialsRemaining.localized, 4)
+        )
     }
 
     func testDecodesLegacyStringToken() throws {

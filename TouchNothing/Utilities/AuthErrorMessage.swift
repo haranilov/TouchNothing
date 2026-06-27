@@ -27,7 +27,13 @@ enum AuthErrorMessage {
         switch serviceError {
         case .nicknameTaken:
             return LocalizationKey.nicknameTaken.localized
-        case .invalidCredentials:
+        case .invalidCredentials(let remainingAttempts):
+            if let remainingAttempts {
+                return String(
+                    format: LocalizationKey.authInvalidCredentialsRemaining.localized,
+                    remainingAttempts
+                )
+            }
             return LocalizationKey.authInvalidCredentials.localized
         case .accountLocked:
             return LocalizationKey.authAccountLocked.localized

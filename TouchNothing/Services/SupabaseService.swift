@@ -3,7 +3,7 @@ import Supabase
 
 enum SupabaseServiceError: Error, Equatable {
     case nicknameTaken
-    case invalidCredentials
+    case invalidCredentials(remainingAttempts: Int? = nil)
     case accountLocked
     case invalidPin
     case invalidNickname
@@ -33,14 +33,14 @@ final class SupabaseService {
     }
 
     func registerUser(nickname: String, pin: String) async throws -> AuthSession {
-        try await fetchAuthSession(
+        try await performAuthRPC(
             "register_user",
             params: NicknameParams(pNickname: nickname, pPin: pin)
         )
     }
 
     func loginUser(nickname: String, pin: String) async throws -> AuthSession {
-        try await fetchAuthSession(
+        try await performAuthRPC(
             "login_user",
             params: NicknameParams(pNickname: nickname, pPin: pin)
         )
@@ -123,34 +123,39 @@ final class SupabaseService {
         return entries
     }
 
-    private func fetchAuthSession(
+    private func performAuthRPC(
         _ function: String,
         params: NicknameParams
     ) async throws -> AuthSession {
-        guard let client else { throw SupabaseServiceError.notConfigured }
-
         do {
-            let response = try await client.rpc(function, params: params).execute()
-            if let session = try? JSONDecoder().decode(AuthSession.self, from: response.data) {
-                return session
-            }
-            if let token = try? JSONDecoder().decode(String.self, from: response.data) {
-                return AuthSession(
-                    nickname: NicknameValidator.normalized(params.pNickname),
-                    sessionToken: token
-                )
-            }
-            throw SupabaseServiceError.serverUpgradeRequired
+            return try await decodeAuthSession(from: function, params: params)
         } catch let postgrestError as PostgrestError {
             throw SupabaseRPCErrorMapper.map(postgrestError)
         } catch let serviceError as SupabaseServiceError {
             throw serviceError
         } catch {
-            if SupabaseRPCErrorMapper.isLikelyEmptyAuthResponse(error) {
-                throw SupabaseServiceError.serverUpgradeRequired
-            }
-            throw SupabaseRPCErrorMapper.map(error)
+            throw mapUnexpectedAuthError(error)
         }
+    }
+
+    private func decodeAuthSession(
+        from function: String,
+        params: NicknameParams
+    ) async throws -> AuthSession {
+        guard let client else { throw SupabaseServiceError.notConfigured }
+
+        let response = try await client.rpc(function, params: params).execute()
+        return try AuthResponseDecoder.decodeSession(
+            from: response.data,
+            fallbackNickname: params.pNickname
+        )
+    }
+
+    private func mapUnexpectedAuthError(_ error: Error) -> SupabaseServiceError {
+        if SupabaseRPCErrorMapper.isLikelyEmptyAuthResponse(error) {
+            return .serverUpgradeRequired
+        }
+        return SupabaseRPCErrorMapper.map(error)
     }
 
     private func executeVoidRPC(

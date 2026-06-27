@@ -6,4 +6,5 @@ enum AppConstants {
     static let pinLength = 4
     static let minNicknameLength = 2
     static let maxNicknameLength = 24
+    static let maxLoginAttempts = 5
 }

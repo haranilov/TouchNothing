@@ -10,6 +10,39 @@ struct AuthSession: Decodable {
     }
 }
 
+struct AuthRPCResponse: Decodable {
+    let ok: Bool?
+    let error: String?
+    let nickname: String?
+    let sessionToken: String?
+    let remainingAttempts: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case ok, error, nickname
+        case sessionToken = "session_token"
+        case remainingAttempts = "remaining_attempts"
+    }
+
+    var authSession: AuthSession? {
+        guard ok != false,
+              let nickname,
+              let sessionToken else {
+            return nil
+        }
+        return AuthSession(nickname: nickname, sessionToken: sessionToken)
+    }
+
+    var serviceError: SupabaseServiceError? {
+        guard ok == false else { return nil }
+
+        if error == "invalid_credentials" {
+            return .invalidCredentials(remainingAttempts: remainingAttempts)
+        }
+
+        return SupabaseRPCErrorMapper.mapAuthErrorToken(error) ?? .networkFailure
+    }
+}
+
 struct NicknameParams: Codable {
     let pNickname: String
     let pPin: String

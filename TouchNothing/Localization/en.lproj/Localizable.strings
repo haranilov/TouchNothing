@@ -19,6 +19,7 @@
 "auth.invalid_pin" = "PIN must be exactly 4 digits";
 "auth.pin_mismatch" = "PINs do not match";
 "auth.invalid_credentials" = "Incorrect nickname or PIN";
+"auth.invalid_credentials_remaining" = "Incorrect nickname or PIN. %d attempts remaining.";
 "auth.account_locked" = "Too many attempts. Try again in 15 minutes.";
 "auth.forgot_pin" = "PIN cannot be recovered. Create a new nickname if you forgot it.";
 "auth.creating" = "Creating account…";

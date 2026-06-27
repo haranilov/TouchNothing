@@ -45,6 +45,7 @@
 		E1A100000000000000000043 /* PinInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000153 /* PinInput.swift */; };
 		E1A100000000000000000044 /* NicknameValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000154 /* NicknameValidator.swift */; };
 		E1A100000000000000000045 /* SupabaseRPCErrorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000155 /* SupabaseRPCErrorMapper.swift */; };
+		E1A100000000000000000189 /* AuthResponseDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000191 /* AuthResponseDecoder.swift */; };
 		E1A100000000000000000046 /* AuthErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000156 /* AuthErrorMessage.swift */; };
 		E1A100000000000000000047 /* LeaderboardMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000157 /* LeaderboardMode.swift */; };
 		E1A100000000000000000048 /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A100000000000000000158 /* LeaderboardService.swift */; };
@@ -97,6 +98,7 @@
 		E1A100000000000000000153 /* PinInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInput.swift; sourceTree = "<group>"; };
 		E1A100000000000000000154 /* NicknameValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameValidator.swift; sourceTree = "<group>"; };
 		E1A100000000000000000155 /* SupabaseRPCErrorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRPCErrorMapper.swift; sourceTree = "<group>"; };
+		E1A100000000000000000191 /* AuthResponseDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponseDecoder.swift; sourceTree = "<group>"; };
 		E1A100000000000000000156 /* AuthErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrorMessage.swift; sourceTree = "<group>"; };
 		E1A100000000000000000157 /* LeaderboardMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardMode.swift; sourceTree = "<group>"; };
 		E1A100000000000000000158 /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				E1A100000000000000000153 /* PinInput.swift */,
 				E1A100000000000000000154 /* NicknameValidator.swift */,
 				E1A100000000000000000155 /* SupabaseRPCErrorMapper.swift */,
+				E1A100000000000000000191 /* AuthResponseDecoder.swift */,
 				E1A100000000000000000156 /* AuthErrorMessage.swift */,
 				E1A100000000000000000166 /* GuestNicknameGenerator.swift */,
 			);
@@ -465,6 +468,7 @@
 				E1A100000000000000000043 /* PinInput.swift in Sources */,
 				E1A100000000000000000044 /* NicknameValidator.swift in Sources */,
 				E1A100000000000000000045 /* SupabaseRPCErrorMapper.swift in Sources */,
+				E1A100000000000000000189 /* AuthResponseDecoder.swift in Sources */,
 				E1A100000000000000000046 /* AuthErrorMessage.swift in Sources */,
 				E1A100000000000000000047 /* LeaderboardMode.swift in Sources */,
 				E1A100000000000000000048 /* LeaderboardService.swift in Sources */,
@@ -557,7 +561,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
@@ -589,7 +593,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -619,7 +623,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -638,7 +642,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 85X5DKJ57B;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
