@@ -46,10 +46,14 @@ Upload the `.aab` to [Google Play Console](https://play.google.com/console).
 
 ## Play Store checklist
 
-- [ ] Privacy policy URL → https://github.com/haranilov/TouchNothing/blob/main/PRIVACY.md
-- [ ] App icon and screenshots (portrait) → `store-assets/screenshots/phone/`
+- [x] Privacy policy URL → https://github.com/haranilov/TouchNothing/blob/main/PRIVACY.md
+- [x] Phone screenshots (portrait) → `store-assets/screenshots/phone/`
+- [x] Signed release bundle → `app/build/outputs/bundle/release/app-release.aab`
+- [x] Store listing copy + upload notes → `store-assets/play-store-listing.md`
+- [ ] Upload `.aab` and screenshots in [Play Console](https://play.google.com/console)
 - [ ] Declare `READ_PHONE_STATE`: used only to end sessions on incoming cellular calls
 - [ ] Content rating questionnaire
+- [ ] Data safety form
 - [ ] Supabase production keys in `local.properties` before release build
 - [ ] Run `./gradlew testDebugUnitTest lintDebug bundleRelease` before upload
 
