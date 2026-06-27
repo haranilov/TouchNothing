@@ -4,9 +4,7 @@ struct SessionChromeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .ignoresSafeArea(.all)
-            .statusBarHidden(true)
-            .persistentSystemOverlays(.hidden)
-            .forceHiddenStatusBar()
+            .hiddenStatusBarChrome()
     }
 }
 

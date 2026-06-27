@@ -5,9 +5,7 @@ struct TouchNothingScreenLayout: ViewModifier {
         content
             .padding(.horizontal, 32)
             .background(AppColors.background)
-            .statusBarHidden(true)
-            .persistentSystemOverlays(.hidden)
-            .forceHiddenStatusBar()
+            .hiddenStatusBarChrome()
     }
 }
 

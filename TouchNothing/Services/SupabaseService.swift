@@ -162,10 +162,8 @@ final class SupabaseService {
 
         do {
             try await client.rpc(function, params: params).execute()
-        } catch let postgrestError as PostgrestError {
-            throw mapErrors ? SupabaseRPCErrorMapper.map(postgrestError) : SupabaseServiceError.networkFailure
         } catch {
-            throw mapErrors ? SupabaseRPCErrorMapper.map(error) : SupabaseServiceError.networkFailure
+            throw rpcError(from: error, mapErrors: mapErrors)
         }
     }
 
@@ -181,10 +179,15 @@ final class SupabaseService {
                 .rpc(function, params: params)
                 .execute()
                 .value
-        } catch let postgrestError as PostgrestError {
-            throw mapErrors ? SupabaseRPCErrorMapper.map(postgrestError) : SupabaseServiceError.networkFailure
         } catch {
-            throw mapErrors ? SupabaseRPCErrorMapper.map(error) : SupabaseServiceError.networkFailure
+            throw rpcError(from: error, mapErrors: mapErrors)
         }
+    }
+
+    private func rpcError(from error: Error, mapErrors: Bool) -> SupabaseServiceError {
+        if mapErrors {
+            return SupabaseRPCErrorMapper.map(error)
+        }
+        return .networkFailure
     }
 }

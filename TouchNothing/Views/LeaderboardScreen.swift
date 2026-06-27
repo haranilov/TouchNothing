@@ -18,9 +18,7 @@ struct LeaderboardScreen: View {
             ScreenBackButton(action: onBack)
         }
         .background(AppColors.background)
-        .statusBarHidden(true)
-        .persistentSystemOverlays(.hidden)
-        .forceHiddenStatusBar()
+        .hiddenStatusBarChrome()
         .task(id: mode) {
             await loadLeaderboard()
         }
@@ -121,6 +119,6 @@ struct LeaderboardScreen: View {
         )
         leaderboardRows = result.rows
         statusMessage = result.statusMessage
-        loadFailed = result.rows.isEmpty && result.statusMessage == LocalizationKey.leaderboardError.localized
+        loadFailed = result.isFailure
     }
 }

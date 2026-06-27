@@ -22,40 +22,15 @@ enum AuthService {
         }
     }
 
-    static func message(for validationError: AuthValidationError) -> String {
-        switch validationError {
-        case .nickname(let nicknameError):
-            return AuthErrorMessage.message(for: nicknameError)
-        case .invalidPin:
-            return LocalizationKey.authInvalidPin.localized
-        case .pinMismatch:
-            return LocalizationKey.authPinMismatch.localized
-        }
-    }
-
     static func authenticate(_ credentials: AuthCredentials) async throws {
         let nickname = NicknameValidator.normalized(credentials.nickname)
 
         switch credentials.mode {
-        case .register:
-            let session = try await SupabaseService.shared.registerUser(
+        case .register, .signIn:
+            try await persistAccountSession(
                 nickname: nickname,
-                pin: credentials.pin
-            )
-            LocalUserStore.saveSession(
-                nickname: session.nickname,
-                sessionToken: session.sessionToken,
-                isGuest: false
-            )
-        case .signIn:
-            let session = try await SupabaseService.shared.loginUser(
-                nickname: nickname,
-                pin: credentials.pin
-            )
-            LocalUserStore.saveSession(
-                nickname: session.nickname,
-                sessionToken: session.sessionToken,
-                isGuest: false
+                pin: credentials.pin,
+                mode: credentials.mode
             )
         case .guest:
             let guestPin = PinInput.randomPin()
@@ -87,5 +62,27 @@ enum AuthService {
         } catch {
             return false
         }
+    }
+
+    private static func persistAccountSession(
+        nickname: String,
+        pin: String,
+        mode: AuthMode
+    ) async throws {
+        let session: AuthSession
+        switch mode {
+        case .register:
+            session = try await SupabaseService.shared.registerUser(nickname: nickname, pin: pin)
+        case .signIn:
+            session = try await SupabaseService.shared.loginUser(nickname: nickname, pin: pin)
+        case .guest:
+            return
+        }
+
+        LocalUserStore.saveSession(
+            nickname: session.nickname,
+            sessionToken: session.sessionToken,
+            isGuest: false
+        )
     }
 }

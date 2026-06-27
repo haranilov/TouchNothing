@@ -1,6 +1,17 @@
 import Foundation
 
 enum AuthErrorMessage {
+    static func message(for validationError: AuthValidationError) -> String {
+        switch validationError {
+        case .nickname(let nicknameError):
+            return message(for: nicknameError)
+        case .invalidPin:
+            return LocalizationKey.authInvalidPin.localized
+        case .pinMismatch:
+            return LocalizationKey.authPinMismatch.localized
+        }
+    }
+
     static func message(for validationError: NicknameValidationError) -> String {
         switch validationError {
         case .empty:

@@ -6,6 +6,7 @@ struct SessionScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var sessionTimer = SessionTimer()
     @State private var sessionEnded = false
+    @State private var callMonitor = SessionCallMonitor()
 
     var body: some View {
         AppColors.background
@@ -17,9 +18,11 @@ struct SessionScreen: View {
             .onAppear {
                 sessionTimer = SessionTimer()
                 sessionEnded = false
+                callMonitor.onPhoneCall = endSessionIfNeeded
+                callMonitor.endSessionIfPhoneCallIsActive()
             }
             .onChange(of: scenePhase) { newPhase in
-                if newPhase == .background {
+                if newPhase != .active {
                     endSessionIfNeeded()
                 }
             }

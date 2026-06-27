@@ -29,4 +29,10 @@ extension View {
     func forceHiddenStatusBar() -> some View {
         background(StatusBarHider())
     }
+
+    func hiddenStatusBarChrome() -> some View {
+        statusBarHidden(true)
+            .persistentSystemOverlays(.hidden)
+            .forceHiddenStatusBar()
+    }
 }

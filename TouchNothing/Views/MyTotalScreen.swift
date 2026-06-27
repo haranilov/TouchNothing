@@ -9,19 +9,16 @@ struct MyTotalScreen: View {
     @State private var loadGeneration = 0
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 0) {
             Spacer()
 
             profileHeader
 
             statsSection
 
-            Button(action: onBack) {
-                Text(LocalizationKey.resultBack.localized)
-            }
-            .buttonStyle(TouchNothingButtonStyle())
-
             Spacer()
+
+            ScreenBackButton(action: onBack)
         }
         .touchNothingScreenLayout()
         .refreshable {
@@ -65,16 +62,12 @@ struct MyTotalScreen: View {
                 Text(LocalizationKey.commonLoading.localized)
                     .font(.largeTitle)
                     .foregroundStyle(AppColors.textPrimary)
-            }
-
-            if loadFailed {
+            } else if loadFailed {
                 Text(LocalizationKey.myTotalLoadFailed.localized)
                     .font(.footnote)
                     .foregroundStyle(AppColors.textSecondary)
                     .multilineTextAlignment(.center)
-            }
-
-            if !isLoading, !loadFailed {
+            } else {
                 Text(DurationFormatter.format(seconds: userStats.totalDurationSeconds))
                     .font(.system(size: 36, weight: .medium, design: .rounded))
                     .foregroundStyle(AppColors.textPrimary)
@@ -93,6 +86,7 @@ struct MyTotalScreen: View {
                 }
             }
         }
+        .padding(.top, 32)
     }
 
     private var sessionsLabel: String {
@@ -100,11 +94,6 @@ struct MyTotalScreen: View {
     }
 
     private func loadStats() async {
-        guard let nickname = LocalUserStore.nickname else {
-            loadFailed = true
-            return
-        }
-
         loadGeneration += 1
         let generation = loadGeneration
 
@@ -112,14 +101,10 @@ struct MyTotalScreen: View {
         loadFailed = false
         defer { isLoading = false }
 
-        do {
-            let stats = try await SupabaseService.shared.fetchUserStats(nickname: nickname)
-            guard generation == loadGeneration else { return }
-            userStats = stats
-            loadFailed = false
-        } catch {
-            guard generation == loadGeneration else { return }
-            loadFailed = true
-        }
+        let result = await UserStatsService.load(nickname: LocalUserStore.nickname)
+        guard generation == loadGeneration else { return }
+
+        userStats = result.stats
+        loadFailed = result.status != .success
     }
 }

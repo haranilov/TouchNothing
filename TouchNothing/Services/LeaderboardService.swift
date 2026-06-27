@@ -1,8 +1,27 @@
 import Foundation
 
+enum LeaderboardLoadStatus: Equatable {
+    case success
+    case offlineCached
+    case failed
+}
+
 struct LeaderboardLoadResult {
     let rows: [LeaderboardRow]
-    let statusMessage: String?
+    let status: LeaderboardLoadStatus
+
+    var statusMessage: String? {
+        switch status {
+        case .success, .failed:
+            return nil
+        case .offlineCached:
+            return LocalizationKey.leaderboardOffline.localized
+        }
+    }
+
+    var isFailure: Bool {
+        status == .failed
+    }
 }
 
 enum LeaderboardService {
@@ -24,10 +43,14 @@ enum LeaderboardService {
             LeaderboardCache.saveBestSession(entries: entries)
             return LeaderboardLoadResult(
                 rows: LeaderboardRowMapper.map(entries: entries, currentNickname: currentNickname),
-                statusMessage: nil
+                status: .success
             )
         } catch {
-            return cachedBestSessionResult(currentNickname: currentNickname)
+            return cachedResult(
+                cachedEntries: LeaderboardCache.loadBestSession(),
+                currentNickname: currentNickname,
+                mapRows: LeaderboardRowMapper.map(entries:currentNickname:)
+            )
         }
     }
 
@@ -37,34 +60,29 @@ enum LeaderboardService {
             LeaderboardCache.saveTotal(entries: entries)
             return LeaderboardLoadResult(
                 rows: LeaderboardRowMapper.mapTotal(entries: entries, currentNickname: currentNickname),
-                statusMessage: nil
+                status: .success
             )
         } catch {
-            return cachedTotalResult(currentNickname: currentNickname)
+            return cachedResult(
+                cachedEntries: LeaderboardCache.loadTotal(),
+                currentNickname: currentNickname,
+                mapRows: LeaderboardRowMapper.mapTotal(entries:currentNickname:)
+            )
         }
     }
 
-    private static func cachedBestSessionResult(currentNickname: String?) -> LeaderboardLoadResult {
-        let cachedEntries = LeaderboardCache.loadBestSession()
+    private static func cachedResult<T>(
+        cachedEntries: [T],
+        currentNickname: String?,
+        mapRows: ([T], String?) -> [LeaderboardRow]
+    ) -> LeaderboardLoadResult {
         guard !cachedEntries.isEmpty else {
-            return LeaderboardLoadResult(rows: [], statusMessage: LocalizationKey.leaderboardError.localized)
+            return LeaderboardLoadResult(rows: [], status: .failed)
         }
 
         return LeaderboardLoadResult(
-            rows: LeaderboardRowMapper.map(entries: cachedEntries, currentNickname: currentNickname),
-            statusMessage: LocalizationKey.leaderboardOffline.localized
-        )
-    }
-
-    private static func cachedTotalResult(currentNickname: String?) -> LeaderboardLoadResult {
-        let cachedEntries = LeaderboardCache.loadTotal()
-        guard !cachedEntries.isEmpty else {
-            return LeaderboardLoadResult(rows: [], statusMessage: LocalizationKey.leaderboardError.localized)
-        }
-
-        return LeaderboardLoadResult(
-            rows: LeaderboardRowMapper.mapTotal(entries: cachedEntries, currentNickname: currentNickname),
-            statusMessage: LocalizationKey.leaderboardOffline.localized
+            rows: mapRows(cachedEntries, currentNickname),
+            status: .offlineCached
         )
     }
 }

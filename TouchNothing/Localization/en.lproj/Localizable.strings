@@ -29,7 +29,7 @@
 "menu.leaderboard" = "Leaderboard";
 "menu.my_total" = "My Total";
 "menu.sign_out" = "Sign Out";
-"rules.body" = "Open the app. Don't touch anything. Don't leave. The longer you stay, the higher you rank. If you receive a call or leave the app — your session ends. Use Do Not Disturb or Airplane Mode if you want an uninterrupted session.";
+"rules.body" = "Open the app. Touch nothing. Don't leave. The longer you stay, the higher you rank. If you touch the screen, leave the app, or receive a phone call — your session ends. To avoid interruptions, turn on Airplane Mode and turn off Wi-Fi (including messenger calls over Wi-Fi).";
 "rules.dont_show" = "Don't show again";
 "rules.start" = "I understand. Start.";
 "result.title" = "You lasted %@";

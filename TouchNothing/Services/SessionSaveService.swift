@@ -19,36 +19,36 @@ final class SessionSaveService: ObservableObject {
     private init() {}
 
     func queueSave(elapsedSeconds: Int) {
-        saveTask?.cancel()
-
         guard elapsedSeconds >= AppConstants.minSessionSeconds else {
             state = .idle
             pendingSeconds = 0
+            saveTask?.cancel()
             return
         }
 
         pendingSeconds = elapsedSeconds
         state = .saving
-
-        saveTask = Task {
-            await performSave()
-        }
+        startSaveTask()
     }
 
     func retry() {
         guard state == .failed, pendingSeconds >= AppConstants.minSessionSeconds else { return }
 
         state = .saving
-        saveTask?.cancel()
-        saveTask = Task {
-            await performSave()
-        }
+        startSaveTask()
     }
 
     func resetIfNotSaving() {
         guard state != .saving else { return }
         state = .idle
         pendingSeconds = 0
+    }
+
+    private func startSaveTask() {
+        saveTask?.cancel()
+        saveTask = Task {
+            await performSave()
+        }
     }
 
     private func performSave(isRetryAfterReauth: Bool = false) async {

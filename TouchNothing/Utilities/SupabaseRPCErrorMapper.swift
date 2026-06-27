@@ -2,6 +2,16 @@ import Foundation
 import Supabase
 
 enum SupabaseRPCErrorMapper {
+    private static let messageMappings: [(token: String, error: SupabaseServiceError)] = [
+        ("nickname_taken", .nicknameTaken),
+        ("invalid_credentials", .invalidCredentials),
+        ("account_locked", .accountLocked),
+        ("invalid_pin", .invalidPin),
+        ("invalid_nickname", .invalidNickname),
+        ("invalid_session_token", .invalidSessionToken),
+        ("nickname_not_registered", .nicknameNotRegistered)
+    ]
+
     static func map(_ error: Error) -> SupabaseServiceError {
         if let postgrestError = error as? PostgrestError {
             return mapMessage(postgrestError.message.lowercased())
@@ -28,28 +38,11 @@ enum SupabaseRPCErrorMapper {
     }
 
     private static func mapMessage(_ message: String) -> SupabaseServiceError {
-        if message.contains("nickname_taken") {
-            return .nicknameTaken
+        for mapping in messageMappings where message.contains(mapping.token) {
+            return mapping.error
         }
-        if message.contains("invalid_credentials") {
-            return .invalidCredentials
-        }
-        if message.contains("account_locked") {
-            return .accountLocked
-        }
-        if message.contains("invalid_pin") {
-            return .invalidPin
-        }
-        if message.contains("invalid_nickname") {
-            return .invalidNickname
-        }
-        if message.contains("invalid_session_token") {
-            return .invalidSessionToken
-        }
-        if message.contains("nickname_not_registered") {
-            return .nicknameNotRegistered
-        }
-        if message.contains("function") && message.contains("does not exist") {
+
+        if message.contains("function"), message.contains("does not exist") {
             return .serverUpgradeRequired
         }
 
