@@ -22,6 +22,7 @@ Minimalist game: open the app and touch nothing. The longer you last, the higher
 ./gradlew testDebugUnitTest lintDebug
 ./gradlew connectedDebugAndroidTest          # requires a running emulator/device
 bash scripts/e2e-call-test.sh                # guest login → session → simulated call
+bash scripts/capture-play-screenshots.sh     # Play Store screenshots → store-assets/
 ```
 
 ## Release build (Play Store)
@@ -46,7 +47,7 @@ Upload the `.aab` to [Google Play Console](https://play.google.com/console).
 ## Play Store checklist
 
 - [ ] Privacy policy URL → https://github.com/haranilov/TouchNothing/blob/main/PRIVACY.md
-- [ ] App icon and screenshots (portrait)
+- [ ] App icon and screenshots (portrait) → `store-assets/screenshots/phone/`
 - [ ] Declare `READ_PHONE_STATE`: used only to end sessions on incoming cellular calls
 - [ ] Content rating questionnaire
 - [ ] Supabase production keys in `local.properties` before release build
@@ -62,6 +63,11 @@ Upload the `.aab` to [Google Play Console](https://play.google.com/console).
 
 - `INTERNET` — leaderboard and account sync
 - `READ_PHONE_STATE` — end session on incoming cellular calls (optional; VoIP detected without it)
+
+## Repositories
+
+- `main` — Android app
+- `ios` — iOS app (App Store)
 
 ## Privacy
 

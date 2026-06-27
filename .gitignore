@@ -1,4 +1,5 @@
 # Android
+.DS_Store
 *.iml
 .gradle/
 build/
@@ -10,5 +11,6 @@ captures/
 *.aab
 *.jks
 *.keystore
+keystore.credentials
 local.properties
 
