@@ -4,7 +4,7 @@ struct MyTotalScreen: View {
     let onBack: () -> Void
 
     @State private var userStats = UserStats.empty
-    @State private var isLoading = false
+    @State private var isLoading = true
     @State private var loadFailed = false
     @State private var loadGeneration = 0
 
@@ -20,10 +20,7 @@ struct MyTotalScreen: View {
 
             ScreenBackButton(action: onBack)
         }
-        .touchNothingScreenLayout()
-        .refreshable {
-            await loadStats()
-        }
+        .touchNothingScreenLayout(hidesStatusBarChrome: false)
         .task {
             await loadStats()
         }
@@ -58,16 +55,29 @@ struct MyTotalScreen: View {
                 .font(.subheadline)
                 .foregroundStyle(AppColors.textSecondary)
 
-            if isLoading {
-                Text(LocalizationKey.commonLoading.localized)
-                    .font(.largeTitle)
-                    .foregroundStyle(AppColors.textPrimary)
-            } else if loadFailed {
-                Text(LocalizationKey.myTotalLoadFailed.localized)
-                    .font(.footnote)
-                    .foregroundStyle(AppColors.textSecondary)
-                    .multilineTextAlignment(.center)
-            } else {
+            ZStack {
+                statsValues
+                    .opacity(isLoading ? 0 : 1)
+
+                if isLoading {
+                    ProgressView()
+                        .tint(AppColors.textSecondary)
+                }
+            }
+            .frame(minHeight: 88)
+        }
+        .padding(.top, 32)
+    }
+
+    @ViewBuilder
+    private var statsValues: some View {
+        if loadFailed {
+            Text(LocalizationKey.myTotalLoadFailed.localized)
+                .font(.footnote)
+                .foregroundStyle(AppColors.textSecondary)
+                .multilineTextAlignment(.center)
+        } else {
+            VStack(spacing: 8) {
                 Text(DurationFormatter.format(seconds: userStats.totalDurationSeconds))
                     .font(.system(size: 36, weight: .medium, design: .rounded))
                     .foregroundStyle(AppColors.textPrimary)
@@ -77,16 +87,13 @@ struct MyTotalScreen: View {
                     Text(sessionsLabel)
                         .font(.footnote)
                         .foregroundStyle(AppColors.textSecondary)
-                }
-
-                if userStats.sessionCount == 0 {
+                } else {
                     Text(LocalizationKey.myTotalNoSessions.localized)
                         .font(.footnote)
                         .foregroundStyle(AppColors.textSecondary)
                 }
             }
         }
-        .padding(.top, 32)
     }
 
     private var sessionsLabel: String {

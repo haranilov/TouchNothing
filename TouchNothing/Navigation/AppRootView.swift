@@ -47,22 +47,26 @@ struct AppRootView: View {
     }
 
     private var menuStack: some View {
-        ZStack {
-            MainMenuScreen(
-                onStart: appNavigator.startSessionFlow,
-                onLeaderboard: appNavigator.openLeaderboard,
-                onMyTotal: appNavigator.openMyTotal,
-                onSignOut: appNavigator.signOut
-            )
-            .opacity(appNavigator.destination == .mainMenu ? 1 : 0)
-            .allowsHitTesting(appNavigator.destination == .mainMenu)
-            .accessibilityHidden(appNavigator.destination != .mainMenu)
-
-            if appNavigator.destination == .leaderboard {
+        Group {
+            switch appNavigator.destination {
+            case .mainMenu:
+                MainMenuScreen(
+                    onStart: appNavigator.startSessionFlow,
+                    onLeaderboard: appNavigator.openLeaderboard,
+                    onMyTotal: appNavigator.openMyTotal,
+                    onSignOut: appNavigator.signOut
+                )
+            case .leaderboard:
                 LeaderboardScreen(onBack: appNavigator.returnToMenu)
-            } else if appNavigator.destination == .myTotal {
+            case .myTotal:
                 MyTotalScreen(onBack: appNavigator.returnToMenu)
+            default:
+                EmptyView()
             }
         }
+        .transaction { transaction in
+            transaction.disablesAnimations = true
+        }
+        .hiddenStatusBarChrome()
     }
 }

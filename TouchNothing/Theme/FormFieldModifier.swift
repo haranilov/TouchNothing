@@ -16,6 +16,6 @@ extension View {
 
     func touchNothingSegmentedPickerStyle() -> some View {
         pickerStyle(.segmented)
-            .tint(AppColors.fieldBackground)
+            .tint(AppColors.textSecondary)
     }
 }

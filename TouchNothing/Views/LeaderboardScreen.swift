@@ -17,8 +17,7 @@ struct LeaderboardScreen: View {
             contentArea
             ScreenBackButton(action: onBack)
         }
-        .background(AppColors.background)
-        .hiddenStatusBarChrome()
+        .touchNothingScreenLayout(hidesStatusBarChrome: false)
         .task(id: mode) {
             await loadLeaderboard()
         }

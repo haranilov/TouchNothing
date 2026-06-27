@@ -38,10 +38,11 @@ struct MainMenuScreen: View {
                     .font(.footnote)
                     .foregroundStyle(AppColors.textSecondary)
             }
+            .buttonStyle(TouchNothingTextButtonStyle())
             .padding(.top, 8)
 
             Spacer()
         }
-        .touchNothingScreenLayout()
+        .touchNothingScreenLayout(hidesStatusBarChrome: false)
     }
 }

@@ -46,14 +46,17 @@ final class AppNavigator: ObservableObject {
     }
 
     func openLeaderboard() {
+        guard destination != .leaderboard else { return }
         destination = .leaderboard
     }
 
     func openMyTotal() {
+        guard destination != .myTotal else { return }
         destination = .myTotal
     }
 
     func returnToMenu() {
+        guard destination != .mainMenu else { return }
         SessionSaveService.shared.resetIfNotSaving()
         destination = .mainMenu
     }
