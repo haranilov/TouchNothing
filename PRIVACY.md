@@ -1,6 +1,6 @@
 # TouchNothing Privacy Policy
 
-**Last updated:** June 27, 2026  
+**Last updated:** July 1, 2026  
 **Contact:** https://github.com/haranilov/TouchNothing/issues
 
 TouchNothing ("the App") is developed by Kos Haranilov. This policy applies to the iOS and Android versions of TouchNothing and explains what data the App collects and how it is used.
@@ -35,11 +35,11 @@ TouchNothing collects a nickname and gameplay statistics to provide accounts, le
 - On **iOS**, this uses UserDefaults.
 - On **Android**, this uses SharedPreferences.
 
-### Call detection (optional)
-- During an active session, the App may detect incoming phone or VoIP calls so your session ends, as described in the in-app rules.
-- On **iOS**, the App uses Apple's CallKit to observe active system calls. The App does not place calls or access your phone number.
+### Session interruption (on-device)
+- During an active session, the App ends your session when you touch the screen or when the App is no longer in the foreground (for example, switching apps or opening Control Center), as described in the in-app rules.
+- On **iOS**, the App does not use CallKit or other call-detection APIs. It does not place calls or access your phone number.
 - On **Android**, you may be asked to allow phone access (`READ_PHONE_STATE`). If granted, the App reads call state only to end your session on incoming cellular calls. The App does not place calls, record calls, or access your phone number. If you deny the permission, the App still works; some VoIP calls may still end a session when the system routes audio for a call.
-- Call-related signals are processed on your device and are not uploaded to our servers.
+- Session-interruption signals are processed on your device and are not uploaded to our servers.
 
 ## Data We Do Not Collect
 
@@ -55,7 +55,8 @@ TouchNothing collects a nickname and gameplay statistics to provide accounts, le
 - To save and display your scores and totals
 - To operate global leaderboards
 - To protect accounts (for example, limiting failed sign-in attempts)
-- To end an active session when a phone or VoIP call is detected (on-device only)
+- To end an active session when you touch the screen or leave the App (on-device only)
+- On Android, to optionally end a session when an incoming cellular call is detected (on-device only)
 
 ## Third-Party Services
 
