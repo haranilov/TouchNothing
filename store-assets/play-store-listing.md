@@ -93,7 +93,7 @@ Version: **1.0.0** (versionCode **1**)
 | Collects or shares user data? | Yes — account and gameplay data |
 | Data types | User IDs (nickname), app activity (session times, scores) |
 | Encrypted in transit | Yes (HTTPS) |
-| Users can request deletion | Yes — via GitHub issues (see privacy policy) |
+| Users can request deletion | Yes — in-app from **My Total → Delete Account** (see privacy policy) |
 | Purpose | App functionality, account management, leaderboards |
 | Sold to third parties | No |
 | Used for advertising | No |

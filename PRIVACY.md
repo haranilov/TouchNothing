@@ -1,6 +1,6 @@
 # TouchNothing Privacy Policy
 
-**Last updated:** July 1, 2026  
+**Last updated:** July 2, 2026  
 **Contact:** https://github.com/haranilov/TouchNothing/issues
 
 TouchNothing ("the App") is developed by Kos Haranilov. This policy applies to the iOS and Android versions of TouchNothing and explains what data the App collects and how it is used.
@@ -70,7 +70,7 @@ We do not sell your personal data. Leaderboard nicknames and session times are v
 
 ## Data Retention
 
-Account and gameplay data remain until you delete your account or we remove it. You may request deletion by opening an issue at the contact link above.
+Account and gameplay data remain until you delete your account or we remove it. You can delete your account in the app from **My Total → Delete Account**.
 
 ## Children
 
@@ -85,7 +85,7 @@ We use industry-standard measures including hashed PINs, session tokens, and HTT
 - You may use Guest mode without creating a permanent account.
 - You may sign out at any time from the app menu.
 - On Android, you may deny phone permission and still use the App.
-- You may request account/data deletion via the contact link above.
+- You may delete your account and associated data in the app from **My Total → Delete Account**. Registered accounts require your PIN; guest accounts require confirmation only.
 
 ## Changes
 
